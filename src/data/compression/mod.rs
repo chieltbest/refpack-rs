@@ -284,16 +284,17 @@ mod test {
     fn compressed_size_includes_header(
         #[strategy(proptest::collection::vec(0..=3u8, 1..=1_000))] input: Vec<u8>,
     ) {
-        let compressed =
-            easy_compress::<Maxis>(&input, CompressionOptions::Fastest)?;
+        let compressed = easy_compress::<Maxis>(&input, CompressionOptions::Fastest)?;
 
         let compressed_total_bytes = compressed.len();
-        let compressed_size_header = u32::from_le_bytes(compressed[..4].try_into().unwrap()) as usize;
+        let compressed_size_header =
+            u32::from_le_bytes(compressed[..4].try_into().unwrap()) as usize;
 
         prop_assert_eq!(
             compressed_total_bytes,
             compressed_size_header,
-            "The compression header compressed size field should include the size of the header itself."
+            "The compression header compressed size field should include the size of the header \
+             itself."
         );
     }
 }
